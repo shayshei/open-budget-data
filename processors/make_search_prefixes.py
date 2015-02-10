@@ -29,6 +29,19 @@ class make_search_prefixes(object):
                 data = json.loads(line)
                 self.index(data['title'],'BudgetLine',data['year'],data['code'])
 
+    def processGroupChanges(self, input):
+        with open(input) as groupChangesFile:
+            for line in groupChangesFile:
+                data = json.loads(line)
+                for i in xrange(len(data['req_titles'])):
+                    self.index(data['req_titles'][i], 'ChangeGroup', data['year'], data['transfer_ids'][i])
+
+    def processSupport(self, input):
+        with open(input) as groupChangesFile:
+            for line in groupChangesFile:
+                data = json.loads(line)
+                self.index(data['recipient'],'Support',data['year'],data['code'])
+
     def process(self,input,output):
         self.processBudgets(input)
         with open(output,"w") as out:
